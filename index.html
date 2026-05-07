@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DragSVG</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <style>
+    body { background-color: #fafafa; font-family: 'Google Sans', sans-serif; }
+    .container { max-width: 960px; margin-top: 3rem; margin-bottom: 3rem; }
+    .result-media { 
+      border-radius: 8px; 
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
+      width: 100%;
+      display: block;
+    }
+    .caption { margin-top: 0.0rem; font-size: 0.75rem; font-weight: 500; color: #4a4a4a; text-align: center; }
+    .section-title { border-bottom: 2px solid #eee; padding-bottom: 0.5rem; margin-bottom: 1.5rem; }
+    .figure-note { margin-top: -1rem; margin-bottom: 1.25rem; font-size: 0.8rem; color: #6b7280; }
+    .figure-grid-item { margin-bottom: 0.0rem; }
+    .figure-grid-header { margin-bottom: 0; }
+    .figure-grid-header .caption { margin-top: 0; }
+    .figure-grid-tight { margin-top: -0.25rem; }
+    .figure-grid-tight > .column { padding-top: 0.25rem; padding-bottom: 0.25rem; }
+    .figure-compact .result-media,
+    .figure-compact .caption {
+      width: 85%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .overlay-card { position: relative; }
+    .overlay-thumb {
+      position: absolute;
+      top: -30px;
+      left: -30px;
+      width: 40%;
+      max-width: 150px;
+      min-width: 40px;
+      border-radius: 6px;
+      border: 1px solid rgba(255,255,255,0.8);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+      background: #fff;
+      z-index: 2;
+    }
+    hr { background-color: #eee; margin: 3rem 0; }
+  </style>
+</head>
+<body>
+
+  <div class="container px-3">
+    <h1 class="title is-3 has-text-centered">DragSVG: Learning to Animate Vector Graphics from User Drags</h1>
+
+    <div class="buttons is-centered mt-4">
+      <a href="#fig1" class="button is-light is-rounded is-small">Figure 1</a>
+      <a href="#fig2" class="button is-small is-rounded is-light">Figure 2</a>
+      <a href="#fig3" class="button is-small is-rounded is-light">Figure 3</a>
+      <a href="#fig4" class="button is-small is-rounded is-light">Figure 4</a>
+    </div>
+
+    <hr>
+
+    <div id="fig1" class="section-content">
+      <h2 class="title is-4 section-title">Figure 1: DragSVG vs. Drag-based Video Models and SVG Animation Methods on AniClipart Dataset.</h2>
+      <p class="figure-note">Arrows with folded trajectories may visually overlap themselves; the actual motion follows the indicated folding direction, though the overlap may obscure parts of the path in "SVG Input".</p>
+      <div class="columns is-variable is-2 is-multiline is-mobile figure-grid-tight">
+        <div class="column is-2 figure-grid-item figure-grid-header">
+          <div class="caption">SVG Input</div>
+        </div>
+        <div class="column is-2 figure-grid-item figure-grid-header">
+          <div class="caption">DragAnything</div>
+        </div>
+        <div class="column is-2 figure-grid-item figure-grid-header">
+          <div class="caption">MotionPro</div>
+        </div>
+        <div class="column is-2 figure-grid-item figure-grid-header">
+          <div class="caption">AniClipart</div>
+        </div>
+        <div class="column is-2 figure-grid-item figure-grid-header">
+          <div class="caption">Vector Prism</div>
+        </div>
+        <div class="column is-2 figure-grid-item figure-grid-header">
+          <div class="caption">DragSVG (Ours)</div>
+        </div>
+        <div class="column is-2 figure-grid-item">
+          <img src="assets/ani_cases/input/kite_tracking.png" class="result-media">
+        </div>
+        <div class="column is-2 figure-grid-item">
+          <img src="assets/ani_cases/draganything/kite.gif" class="result-media">
+        </div>
+        <div class="column is-2 figure-grid-item">
+          <img src="assets/ani_cases/motionpro/kite.gif" class="result-media">
+        </div>
+        <div class="column is-2 figure-grid-item">
+          <img src="assets/ani_cases/aniclipart/kite.gif" class="result-media">
+          <div class="caption">A kite is swaying its tail gently and fluttering its sails.</div>
+        </div>
+        <div class="column is-2 figure-grid-item">
+          <img src="assets/ani_cases/vector_prism/kite.gif" class="result-media">
+          <div class="caption">Can you animate this SVG file? I want the kite's tail to sway gently and the character's sails to flutter.</div>
+        </div>
+        <div class="column is-2 figure-grid-item">
+          <img src="assets/ani_cases/ours/kite.gif" class="result-media">
+        </div>
+        <div class="column is-2 figure-grid-item">
+          <img src="assets/ani_cases/input/man_demon_tracking.png" class="result-media">
+        </div>
+        <div class="column is-2 figure-grid-item">
+          <img src="assets/ani_cases/draganything/demon.gif" class="result-media">
+        </div>
+        <div class="column is-2 figure-grid-item">
+          <img src="assets/ani_cases/motionpro/demon.gif" class="result-media">
+        </div>
+        <div class="column is-2 figure-grid-item">
+          <img src="assets/ani_cases/aniclipart/demon.gif" class="result-media">
+          <div class="caption">A demon man is waving his arms and wagging his tail.</div>
+        </div>
+        <div class="column is-2 figure-grid-item">
+          <img src="assets/ani_cases/vector_prism/demon.gif" class="result-media">
+          <div class="caption">Can you animate this SVG file? I want the man to wave his arms and wag his tail.</div>
+        </div>
+        <div class="column is-2 figure-grid-item">
+          <img src="assets/ani_cases/ours/demon.gif" class="result-media">
+        </div>
+        <div class="column is-2 figure-grid-item">
+          <img src="assets/ani_cases/input/man_rap.png" class="result-media">
+        </div>
+        <div class="column is-2 figure-grid-item">
+          <img src="assets/ani_cases/draganything/man_rap.gif" class="result-media">
+        </div>
+        <div class="column is-2 figure-grid-item">
+          <img src="assets/ani_cases/motionpro/man_rap.gif" class="result-media">
+        </div>
+        <div class="column is-2 figure-grid-item">
+          <img src="assets/ani_cases/aniclipart/man_rap.gif" class="result-media">
+          <div class="caption">A man is swinging his arms and nodding his head.</div>
+        </div>
+        <div class="column is-2 figure-grid-item">
+          <img src="assets/ani_cases/vector_prism/man_rap.gif" class="result-media">
+          <div class="caption">Can you animate this SVG file? I want the man to swing his arms and nod his head.</div>
+        </div>
+        <div class="column is-2 figure-grid-item">
+          <img src="assets/ani_cases/ours/man_rap.gif" class="result-media">
+        </div>
+        <div class="column is-2 figure-grid-item">
+          <img src="assets/ani_cases/input/crab_tracking.png" class="result-media">
+        </div>
+        <div class="column is-2 figure-grid-item">
+          <img src="assets/ani_cases/draganything/crab.gif" class="result-media">
+        </div>
+        <div class="column is-2 figure-grid-item">
+          <img src="assets/ani_cases/motionpro/crab.gif" class="result-media">
+        </div>
+        <div class="column is-2 figure-grid-item">
+          <img src="assets/ani_cases/aniclipart/crab.gif" class="result-media">
+          <div class="caption">A crab opens and closes its claws.</div>
+        </div>
+        <div class="column is-2 figure-grid-item">
+          <img src="assets/ani_cases/vector_prism/crab.gif" class="result-media">
+          <div class="caption">Can you animate this SVG file? I want the crab to open and close its claws.</div>
+        </div>
+        <div class="column is-2 figure-grid-item">
+          <img src="assets/ani_cases/ours/crab.gif" class="result-media">
+        </div>
+        <div class="column is-2 figure-grid-item">
+          <img src="assets/ani_cases/input/man_fencing_tracking.png" class="result-media">
+        </div>
+        <div class="column is-2 figure-grid-item">
+          <img src="assets/ani_cases/draganything/man_fencing.gif" class="result-media">
+        </div>
+        <div class="column is-2 figure-grid-item">
+          <img src="assets/ani_cases/motionpro/man_fencing.gif" class="result-media">
+        </div>
+        <div class="column is-2 figure-grid-item">
+          <img src="assets/ani_cases/aniclipart/man_fencing.gif" class="result-media">
+          <div class="caption">A man is swinging his sword.</div>
+        </div>
+        <div class="column is-2 figure-grid-item">
+          <img src="assets/ani_cases/vector_prism/man_fencing.gif" class="result-media">
+          <div class="caption">Can you animate this SVG file? I want this man to swing his sword.</div>
+        </div>
+        <div class="column is-2 figure-grid-item">
+          <img src="assets/ani_cases/ours/man_fencing.gif" class="result-media">
+        </div>
+        <div class="column is-2 figure-grid-item">
+          <img src="assets/ani_cases/input/spider_tracking.png" class="result-media">
+        </div>
+        <div class="column is-2 figure-grid-item">
+          <img src="assets/ani_cases/draganything/spider.gif" class="result-media">
+        </div>
+        <div class="column is-2 figure-grid-item">
+          <img src="assets/ani_cases/motionpro/spider.gif" class="result-media">
+        </div>
+        <div class="column is-2 figure-grid-item">
+          <img src="assets/ani_cases/aniclipart/spider.gif" class="result-media">
+          <div class="caption">A spider is scuttling its legs.</div>
+        </div>
+        <div class="column is-2 figure-grid-item">
+          <img src="assets/ani_cases/vector_prism/spider.gif" class="result-media">
+          <div class="caption">Can you animate this SVG file? I want the spider's legs to scuttle.</div>
+        </div>
+        <div class="column is-2 figure-grid-item">
+          <img src="assets/ani_cases/ours/spider.gif" class="result-media">
+        </div>
+        <div class="column is-2 figure-grid-item">
+          <img src="assets/ani_cases/input/woman_dance_tracking.png" class="result-media">
+        </div>
+        <div class="column is-2 figure-grid-item">
+          <img src="assets/ani_cases/draganything/woman_dance.gif" class="result-media">
+        </div>
+        <div class="column is-2 figure-grid-item">
+          <img src="assets/ani_cases/motionpro/woman_dance.gif" class="result-media">
+        </div>
+        <div class="column is-2 figure-grid-item">
+          <img src="assets/ani_cases/aniclipart/woman_dance.gif" class="result-media">
+          <div class="caption">A woman is swaying with her arms and legs in a playful rhythm.</div>
+        </div>
+        <div class="column is-2 figure-grid-item">
+          <img src="assets/ani_cases/vector_prism/woman_dance.gif" class="result-media">
+          <div class="caption">Can you animate this SVG file? I want the woman to sway with her arms and legs in a playful rhythm.</div>
+        </div>
+        <div class="column is-2 figure-grid-item">
+          <img src="assets/ani_cases/ours/woman_dance.gif" class="result-media">
+        </div>
+      </div>
+    </div>
+
+    <hr>
+
+    <div id="fig2" class="section-content">
+      <h2 class="title is-4 section-title">Figure 2: DragSVG vs. Drag-based Video Models and SVG Animation Methods on Vector-Prism Dataset.</h2>
+      <div class="columns is-variable is-2 is-multiline is-mobile figure-grid-tight">
+        <div class="column is-2 figure-grid-item figure-grid-header">
+          <div class="caption">SVG Input</div>
+        </div>
+        <div class="column is-2 figure-grid-item figure-grid-header">
+          <div class="caption">DragAnything</div>
+        </div>
+        <div class="column is-2 figure-grid-item figure-grid-header">
+          <div class="caption">MotionPro</div>
+        </div>
+        <div class="column is-2 figure-grid-item figure-grid-header">
+          <div class="caption">AniClipart</div>
+        </div>
+        <div class="column is-2 figure-grid-item figure-grid-header">
+          <div class="caption">Vector Prism</div>
+        </div>
+        <div class="column is-2 figure-grid-item figure-grid-header">
+          <div class="caption">DragSVG (Ours)</div>
+        </div>
+        <div class="column is-2 figure-grid-item">
+          <img src="assets/vp_cases/input/fish-svgrepo-com_tracking.png" class="result-media">
+        </div>
+        <div class="column is-2 figure-grid-item">
+          <img src="assets/vp_cases/draganything/fish.gif" class="result-media">
+        </div>
+        <div class="column is-2 figure-grid-item">
+          <img src="assets/vp_cases/motionpro/fish.gif" class="result-media">
+        </div>
+        <div class="column is-2 figure-grid-item">
+          <img src="assets/vp_cases/aniclipart/fish.gif" class="result-media">
+          <div class="caption">A fish is blowing bubbles, and they are floating up slowly.</div>
+        </div>
+        <div class="column is-2 figure-grid-item">
+          <img src="assets/vp_cases/vp/fish_animation16.gif" class="result-media">
+          <div class="caption">Can you animate this SVG file? I want the fish to blow bubbles and have them float up slowly.</div>
+        </div>
+        <div class="column is-2 figure-grid-item">
+          <img src="assets/vp_cases/dragsvg/fish_gif_iter500.gif" class="result-media">
+        </div>
+        <div class="column is-2 figure-grid-item">
+          <img src="assets/vp_cases/input/bird-svgrepo-com_tracking.png" class="result-media">
+        </div>
+        <div class="column is-2 figure-grid-item">
+          <img src="assets/vp_cases/draganything/bird.gif" class="result-media">
+        </div>
+        <div class="column is-2 figure-grid-item">
+          <img src="assets/vp_cases/motionpro/bird.gif" class="result-media">
+        </div>
+        <div class="column is-2 figure-grid-item">
+          <img src="assets/vp_cases/aniclipart/bird_gif_iter500.gif" class="result-media">
+          <div class="caption">A bird is wagging its tail.</div>
+        </div>
+        <div class="column is-2 figure-grid-item">
+          <img src="assets/vp_cases/vp/bird_animation16.gif" class="result-media">
+          <div class="caption">Can you animate this SVG file? I want the bird to wag its tail.</div>
+        </div>
+        <div class="column is-2 figure-grid-item">
+          <img src="assets/vp_cases/dragsvg/bird_gif_iter500.gif" class="result-media">
+        </div>
+        <div class="column is-2 figure-grid-item">
+          <img src="assets/vp_cases/input/correct-success-tick-svgrepo-com_tracking.png" class="result-media">
+        </div>
+        <div class="column is-2 figure-grid-item">
+          <img src="assets/vp_cases/draganything/correct.gif" class="result-media">
+        </div>
+        <div class="column is-2 figure-grid-item">
+          <img src="assets/vp_cases/motionpro/correct.gif" class="result-media">
+        </div>
+        <div class="column is-2 figure-grid-item">
+          <img src="assets/vp_cases/aniclipart/correct.gif" class="result-media">
+          <div class="caption">An checkmark icon is floating upward.</div>
+        </div>
+        <div class="column is-2 figure-grid-item">
+          <img src="assets/vp_cases/vp/correct_animation16.gif" class="result-media">
+          <div class="caption">Can you animate this SVG file? I want the checkmark icon to float upward.</div>
+        </div>
+        <div class="column is-2 figure-grid-item">
+          <img src="assets/vp_cases/dragsvg/correct_gif_iter500.gif" class="result-media">
+        </div>
+      </div>
+    </div>
+
+    <hr>
+
+    <div id="fig3" class="section-content">
+      <h2 class="title is-4 section-title">Figure 3: More Results on AniClipart Dataset</h2>
+      <div class="columns is-variable is-2 is-mobile">
+        <div class="column is-3">
+          <div class="overlay-card">
+            <img src="assets/more/bird3_tracking.png" class="overlay-thumb">
+            <img src="assets/more/bird3.gif" class="result-media">
+          </div>
+          <!-- <div class="caption">Scenario 1</div> -->
+        </div>
+        <div class="column is-3">
+          <div class="overlay-card">
+            <img src="assets/more/camel_tracking.png" class="overlay-thumb">
+            <img src="assets/more/camel.gif" class="result-media">
+          </div>
+          <!-- <div class="caption">Scenario 2</div> -->
+        </div>
+        <div class="column is-3">
+          <div class="overlay-card">
+            <img src="assets/more/demon_tracking.png" class="overlay-thumb">
+            <img src="assets/more/demon.gif" class="result-media">
+          </div>
+          <!-- <div class="caption">Scenario 4</div> -->
+        </div>
+        <div class="column is-3">
+          <div class="overlay-card">
+            <img src="assets/more/man_boxing2_tracking.png" class="overlay-thumb">
+            <img src="assets/more/man_boxing2.gif" class="result-media">
+          </div>
+          <!-- <div class="caption">Scenario 5</div> -->
+        </div>
+      </div>
+      <div class="columns is-variable is-2 is-multiline mt-5">
+        <div class="column is-3">
+          <img src="assets/drag_10/octopus_tracking.png" class="result-media">
+          <div class="caption">Input</div>
+        </div>
+        <div class="column is-3">
+          <img src="assets/drag_10/octopus.gif" class="result-media">
+          <div class="caption">Result</div>
+        </div>
+        <div class="column is-3">
+          <img src="assets/drag_10/woman_jump_tracking.png" class="result-media">
+          <div class="caption">Input</div>
+        </div>
+        <div class="column is-3">
+          <img src="assets/drag_10/woman_jump.gif" class="result-media">
+          <div class="caption">Result</div>
+        </div>
+      </div>
+    </div>
+
+    <hr>
+
+    <div id="fig4" class="section-content">
+      <h2 class="title is-4 section-title">Figure 4: Animation Results without and with Motion Prior.</h2>
+      <div class="columns is-variable is-2 is-multiline figure-compact">
+        <div class="column is-4">
+          <img src="assets/motion_prior/bug_tracking.png" class="result-media">
+          <div class="caption">Input</div>
+        </div>
+        <div class="column is-4">
+          <img src="assets/motion_prior/bug_wo_prior.gif" class="result-media">
+          <div class="caption">w/o motion prior</div>
+        </div>
+        <div class="column is-4">
+          <img src="assets/motion_prior/bug_w_prior.gif" class="result-media">
+          <div class="caption">Ours</div>
+        </div>
+        <div class="column is-4">
+          <img src="assets/motion_prior/woman_jump_tracking.png" class="result-media">
+          <div class="caption">Input</div>
+        </div>
+        <div class="column is-4">
+          <img src="assets/motion_prior/woman_jump_wo_prior.gif" class="result-media">
+          <div class="caption">w/o motion prior</div>
+        </div>
+        <div class="column is-4">
+          <img src="assets/motion_prior/woman_jump_w_prior.gif" class="result-media">
+          <div class="caption">Ours</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>
